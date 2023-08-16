@@ -8,7 +8,7 @@ import { JwtMiddleware } from './middleware/jwt.middleware';
 import { NotesModule } from './notes/notes.module';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://db_project/nest'), UsersModule, JwtModule.register({
+  imports: [MongooseModule.forRoot('mongodb://notes_database/nest'), UsersModule, JwtModule.register({
     secret: 'secret',
     signOptions: { expiresIn: '1d' },
   }), NotesModule],
