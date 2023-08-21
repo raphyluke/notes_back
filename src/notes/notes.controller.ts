@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Post, Put, Query, Res } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
 
@@ -25,6 +25,14 @@ export class NotesController {
     async updateNotes(@Body() body : any) {
         console.log(body);
         return await this.notesService.update(body);
+    }
+
+    @Delete("/delete")
+    async deleteNotes(@Body() body: any) {
+        await this.notesService.delete(body.id);
+        const notes = await this.notesService.findAll(body.email);
+        // with status code, for example, return a specific status code and message
+        return { statusCode: 200, message: 'Note deleted' };
     }
 
 }

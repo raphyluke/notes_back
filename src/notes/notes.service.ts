@@ -47,22 +47,22 @@ export class NotesService {
         }
       }
 
-      async findAll(email): Promise<any> {
-        try {
-          // find user from email
-          const user = await this.usersModel.find({ email: email });
-          if (user.length === 0) {
-            throw new Error('User not found');
-          }
-      
-          // find all notes from user
-          const notes = await this.notesModel.find({ author: user[0]._id });
-          return notes;
-        } catch (err) {
-          console.log(err);
-          throw new Error('An error occurred while fetching the notes');
+    async findAll(email): Promise<any> {
+      try {
+        // find user from email
+        const user = await this.usersModel.find({ email: email });
+        if (user.length === 0) {
+          throw new Error('User not found');
         }
+    
+        // find all notes from user
+        const notes = await this.notesModel.find({ author: user[0]._id });
+        return notes;
+      } catch (err) {
+        console.log(err);
+        throw new Error('An error occurred while fetching the notes');
       }
+    }
 
     async findOne(id: string): Promise<any> {
         return await this.notesModel.findById(id).exec();
@@ -73,7 +73,7 @@ export class NotesService {
         return updated;
     }
 
-    async delete(id: string): Promise<any> {
+    async delete(id: any): Promise<any> {
         return await this.notesModel.findByIdAndRemove(id);
     }
 }
