@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { url } from 'inspector';
 import { Model } from 'mongoose';
 
 @Injectable()
@@ -69,8 +68,8 @@ export class NotesService {
     }
 
     async update(note: any): Promise<any> {
-        const updated = await this.notesModel.findByIdAndUpdate(note._id, note);
-        return updated;
+      const updated = await this.notesModel.findByIdAndUpdate(note._id, note);
+      return updated;
     }
 
     async delete(id: any): Promise<any> {

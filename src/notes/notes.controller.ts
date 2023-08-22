@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Post, Put, Query, Res } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { HttpException, HttpStatus } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('notes')
 export class NotesController {
@@ -23,7 +24,6 @@ export class NotesController {
 
     @Put("/update")
     async updateNotes(@Body() body : any) {
-        console.log(body);
         return await this.notesService.update(body);
     }
 
