@@ -11,6 +11,13 @@ interface Note {
 export class NotesController {
     constructor(private readonly notesService: NotesService) {}
 
+    /**
+     * Create a new note for a given email.
+     * @param email The email of the user creating the note.
+     * @param res The response object.
+     * @returns An object containing the status code, message, and created note.
+     * @throws HttpException if there was an error creating the note.
+     */
     @Post('/create')
     async createNote(
         @Body() { email }: Note,
@@ -28,6 +35,12 @@ export class NotesController {
         }
     }
 
+    /**
+     * Get all notes for a given email.
+     * @param email The email of the user whose notes are being retrieved.
+     * @returns An array of notes.
+     * @throws HttpException if there was an error retrieving the notes.
+     */
     @Get('/get/:email')
     async getNotes(@Param('email') email: string): Promise<Note[]> {
         try {
@@ -38,6 +51,12 @@ export class NotesController {
         }
     }
 
+    /**
+     * Update an existing note.
+     * @param oldnote The note to be updated.
+     * @returns The updated note.
+     * @throws HttpException if there was an error updating the note.
+     */
     @Put('/update')
     async updateNotes(@Body() oldnote: Note): Promise<Note> {
         try {
@@ -49,6 +68,14 @@ export class NotesController {
         }
     }
 
+    /**
+     * Delete an existing note.
+     * @param id The id of the note to be deleted.
+     * @param email The email of the user who owns the note.
+     * @param res The response object.
+     * @returns An object containing the status code and message.
+     * @throws HttpException if there was an error deleting the note.
+     */
     @Delete('/delete')
     async deleteNotes(
         @Body() { id, email }: { id: string; email: string },
