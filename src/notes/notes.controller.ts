@@ -1,38 +1,67 @@
-import { Body, Controller, Delete, Get, Post, Put, Query, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
 import { NotesService } from './notes.service';
-import { HttpException, HttpStatus } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+
+interface Note {
+    id: string;
+    email: string;
+    content: string;
+}
 
 @Controller('notes')
 export class NotesController {
     constructor(private readonly notesService: NotesService) {}
 
-    @Post("/create")
-    async createNote(@Body() body : any) {
-        return await this.notesService.create(body);
-    }
-
-    @Get("/get")
-    async getNotes(@Query('email') email: any) {
+    @Post('/create')
+    async createNote(
+        @Body() { email }: Note,
+        @Res() res: any,
+    ): Promise<{ statusCode: number; message: string; note: Note }> {
         try {
-            return await this.notesService.findAll(email);
-        } catch (err) {
-            // Handle error, for example, return a specific status code and message
-            throw new HttpException('An error occurred', HttpStatus.INTERNAL_SERVER_ERROR);
+            const note = await this.notesService.create({ email });
+            return res.status(HttpStatus.CREATED).send({
+                statusCode: HttpStatus.CREATED,
+                message: 'Note created',
+                note,
+            });
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @Put("/update")
-    async updateNotes(@Body() body : any) {
-        return await this.notesService.update(body);
+    @Get('/get/:email')
+    async getNotes(@Param('email') email: string): Promise<Note[]> {
+        try {
+            const notes = await this.notesService.findAll(email);
+            return notes;
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @Delete("/delete")
-    async deleteNotes(@Body() body: any) {
-        await this.notesService.delete(body.id);
-        const notes = await this.notesService.findAll(body.email);
-        // with status code, for example, return a specific status code and message
-        return { statusCode: 200, message: 'Note deleted' };
+    @Put('/update')
+    async updateNotes(@Body() oldnote: Note): Promise<Note> {
+        try {
+            const note = await this.notesService.update(oldnote);
+            console.log(note);
+            return note;
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
+    @Delete('/delete')
+    async deleteNotes(
+        @Body() { id, email }: { id: string; email: string },
+        @Res() res: any,
+    ): Promise<{ statusCode: number; message: string }> {
+        try {
+            await this.notesService.delete(id);
+            return res.status(HttpStatus.OK).send({
+                statusCode: HttpStatus.OK,
+                message: 'Note deleted',
+            });
+        } catch (error) {
+            throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
