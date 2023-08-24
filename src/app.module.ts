@@ -7,9 +7,10 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtMiddleware } from './middleware/jwt.middleware';
 import { NotesModule } from './notes/notes.module';
 import { NotesController } from './notes/notes.controller';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [MongooseModule.forRoot('mongodb://notes_database/nest'), UsersModule, JwtModule.register({
+  imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGO_URL), UsersModule, JwtModule.register({
     secret: 'secret',
     signOptions: { expiresIn: '1d' },
   }), NotesModule],
