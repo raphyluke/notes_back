@@ -5,9 +5,10 @@ import { UsersSchema } from '../schema/users.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GoogleStrategy } from './google.strategy';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [MongooseModule.forFeature([{name: 'Users', schema: UsersSchema}]), JwtModule.register({
+  imports: [ConfigModule.forRoot() ,MongooseModule.forFeature([{name: 'Users', schema: UsersSchema}]), JwtModule.register({
     secret: process.env.JWT_SECRET,
     signOptions: { expiresIn: '1d' },
   })],
