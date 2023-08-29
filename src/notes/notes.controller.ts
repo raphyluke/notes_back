@@ -61,10 +61,7 @@ export class NotesController {
     async updateNotes(@Body() oldnote: Note): Promise<Note> {
         try {
             const note = await this.notesService.update(oldnote);
-<<<<<<< HEAD
-=======
             console.log(note);
->>>>>>> 6c97740b9b763a2de814ba81746bad90a775efbf
             return note;
         } catch (error) {
             throw new HttpException(error.message, HttpStatus.INTERNAL_SERVER_ERROR);
