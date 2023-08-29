@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+=======
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+>>>>>>> 6c97740b9b763a2de814ba81746bad90a775efbf
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
