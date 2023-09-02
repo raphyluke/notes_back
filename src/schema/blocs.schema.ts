@@ -23,6 +23,9 @@ export class Blocs {
     @Prop( { required: true })
     content : string | null;
 
+    @Prop( {default: false})
+    checked : boolean;
+
     @Prop({ default: Date.now })
     created_at: Date;
 
