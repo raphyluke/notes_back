@@ -8,12 +8,13 @@ import { JwtMiddleware } from './middleware/jwt.middleware';
 import { NotesModule } from './notes/notes.module';
 import { NotesController } from './notes/notes.controller';
 import { ConfigModule } from '@nestjs/config';
+import { SubnotesModule } from './subnotes/subnotes.module';
 
 @Module({
   imports: [ConfigModule.forRoot(), MongooseModule.forRoot(process.env.MONGO_URL), UsersModule, JwtModule.register({
-    secret: 'secret',
+    secret: process.env.JWT_SECRET,
     signOptions: { expiresIn: '1d' },
-  }), NotesModule],
+  }), NotesModule, SubnotesModule],
   controllers: [AppController],
   providers: [AppService],
 })
