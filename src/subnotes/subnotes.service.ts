@@ -18,10 +18,19 @@ export class SubnotesService {
             if (!user) {
               throw new Error('User not found');
             }
+            console.log("noteId : " + body.noteId)
+            // Find the note from the noteId
+            const noteFromId = await this.notesModel.findById(body.noteId);
+
+            console.log(noteFromId)
       
+            if (!noteFromId) {
+              throw new Error('Note not found');
+            }
+
             // Create a new note
             const newNote = new this.subnotesModel({
-              noteId: body.noteId,
+              note: noteFromId._id,
               title: 'New Note',
               author: user._id,
               blocs: []

@@ -6,7 +6,7 @@ import { NotesSchema } from 'src/schema/notes.schema';
 import { UsersSchema } from 'src/schema/users.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'Notes', schema: NotesSchema }, { name: 'Users', schema: UsersSchema }])],
+  imports: [MongooseModule.forFeature([{ name: 'Notes', schema: NotesSchema }, { name: 'Users', schema: UsersSchema }, { name: 'Subnotes', schema: NotesSchema }])],
   controllers: [NotesController],
   providers: [NotesService]
 })

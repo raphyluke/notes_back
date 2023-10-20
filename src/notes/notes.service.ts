@@ -12,7 +12,8 @@ import { Model } from 'mongoose';
 export class NotesService {
   constructor(
     @InjectModel('Notes') private readonly notesModel: Model<any>,
-    @InjectModel('Users') private readonly usersModel: Model<any>
+    @InjectModel('Users') private readonly usersModel: Model<any>,
+    @InjectModel('Subnotes') private readonly subnotesModel: Model<any>,
   ) {}
 
   /**
@@ -107,6 +108,7 @@ export class NotesService {
    * @returns The deleted note.
    */
   async delete(id: any): Promise<any> {
+    this.subnotesModel.deleteMany({ note: id }).exec();
     return await this.notesModel.findByIdAndRemove(id);
   }
 }
