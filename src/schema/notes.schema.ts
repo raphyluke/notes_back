@@ -4,12 +4,15 @@ import mongoose from 'mongoose';
 import { Users } from './users.schema';
 import { Blocs } from './blocs.schema';
 
-export type UsersDocument = HydratedDocument<Notes>;
+export type NotesDocument = HydratedDocument<Notes>;
 
 @Schema()
 export class Notes {
     @Prop( { required: true })
     title : string;
+
+    @Prop()
+    note : number;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Users'})
     author : Users;

@@ -5,15 +5,15 @@ import { Users } from './users.schema';
 import { Blocs } from './blocs.schema';
 import { Notes } from './notes.schema';
 
-export type UsersDocument = HydratedDocument<Subnotes>;
+export type SubnotesDocument = HydratedDocument<Subnotes>;
 
 @Schema()
 export class Subnotes {
-    @Prop({type : mongoose.Schema.Types.ObjectId, ref: 'Notes'})
-    note : Notes;
-
     @Prop( { required: true })
     title : string;
+    
+    @Prop({type : mongoose.Schema.Types.ObjectId, ref: 'Notes'})
+    note : Notes;
 
     @Prop({type: mongoose.Schema.Types.ObjectId, ref: 'Users'})
     author : Users;

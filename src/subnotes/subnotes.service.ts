@@ -1,16 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { Subnotes } from 'src/schema/subnotes.schema';
+import { Users } from 'src/schema/users.schema';
+import { Notes } from 'src/schema/notes.schema';
 
 @Injectable()
 export class SubnotesService {
     constructor(
-        @InjectModel('Subnotes') private readonly subnotesModel: Model<any>,
-        @InjectModel('Notes') private readonly notesModel: Model<any>,
-        @InjectModel('Users') private readonly usersModel: Model<any>
+        @InjectModel('Notes') private readonly notesModel: Model<Notes>,
+        @InjectModel('Subnotes') private readonly subnotesModel: Model<Subnotes>,
+        @InjectModel('Users') private readonly usersModel: Model<Users>
     ) {}
 
-    async create(body: { email: string, noteId: string }): Promise<any> {
+    async create(body: { email: string, noteId: string }): Promise<Subnotes> {
         try {
             // Find the user from the email
             const user = await this.usersModel.findOne({ email: body.email });
@@ -21,8 +24,6 @@ export class SubnotesService {
             console.log("noteId : " + body.noteId)
             // Find the note from the noteId
             const noteFromId = await this.notesModel.findById(body.noteId);
-
-            console.log(noteFromId)
       
             if (!noteFromId) {
               throw new Error('Note not found');
@@ -33,13 +34,15 @@ export class SubnotesService {
               note: noteFromId._id,
               title: 'New Note',
               author: user._id,
-              blocs: []
+              blocs: [],
+              test : "Coucou"
             });
+            
       
             const note = await newNote.save();
       
             // Add a new bloc to the note
-            const newBloc = {
+            const newBloc : any = {
               order: 0,
               note: note._id,
               type: 'text',
