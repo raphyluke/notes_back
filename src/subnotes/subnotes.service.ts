@@ -21,6 +21,7 @@ export class SubnotesService {
       
             // Create a new note
             const newNote = new this.subnotesModel({
+              noteId: body.noteId,
               title: 'New Note',
               author: user._id,
               blocs: []
